@@ -1,0 +1,134 @@
+Activity_main.xml/
+
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp"
+    tools:context=".MainActivity">
+
+    <RadioGroup
+        android:id="@+id/radioGroup"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <RadioButton
+            android:id="@+id/radioOption1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Option 1" />
+
+        <RadioButton
+            android:id="@+id/radioOption2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Option 2" />
+
+        <!-- Add more radio buttons if needed -->
+
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/buttonShowSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Show Selection" />
+
+    <TextView
+        android:id="@+id/textViewSelection"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Selected option will be displayed here" />
+
+</LinearLayout>
+
+
+
+
+
+MainActivity.java
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
+
+public class MainActivity extends AppCompatActivity {
+
+    private RadioGroup radioGroup;
+    private Button buttonShowSelection;
+    private TextView textViewSelection;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main_linear); // Use the layout you want (linear or relative)
+
+        radioGroup = findViewById(R.id.radioGroup);
+        buttonShowSelection = findViewById(R.id.buttonShowSelection);
+        textViewSelection = findViewById(R.id.textViewSelection);
+
+        buttonShowSelection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int selectedRadioButtonId = radioGroup.getCheckedRadioButtonId();
+
+                if (selectedRadioButtonId != -1) {
+                    RadioButton selectedRadioButton = findViewById(selectedRadioButtonId);
+                    String selectionText = selectedRadioButton.getText().toString();
+                    textViewSelection.setText("Selected option: " + selectionText);
+                } else {
+                    textViewSelection.setText("No option selected");
+                }
+            }
+        });
+    }
+}
+
+
+
+
+
+
+KRAIMAL
+
+# Importing the necessary libraries
+import cv2
+import pytesseract
+from gtts import gTTS
+from playsound import playsound
+
+# Specifying the path to Tesseract
+pytesseract.pytesseract.tesseract_cmd = r'C:/Program Files/Tesseract-OCR/tesseract.exe'
+
+# Reading the image
+image = cv2.imread('1.png')
+    
+# Extraction of text from image
+text = pytesseract.image_to_string(image)
+
+# Formatting the data
+# Create the voice_text variable to store the data.
+voice_text = ""
+
+# Pre-processing the data
+for i in text.split():
+    voice_text += i + ' '
+
+# Removing the last space
+voice_text = voice_text[:-1]
+
+# Create a gTTS object
+tts = gTTS(voice_text)
+
+# Save the audio file
+tts.save("test.mp3")
+
+# Play the audio file
+playsound("test.mp3")
